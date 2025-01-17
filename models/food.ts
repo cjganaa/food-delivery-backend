@@ -1,12 +1,11 @@
 import { Schema , model} from "mongoose";
-import { ObjectId } from "mongodb";
 
 const FoodSchema = new Schema({
-    name:String,
+    name:{type:Schema.Types.ObjectId},
     price:Number,
     image:String,
     ingredients:String,
-    category: ObjectId,
+    category: {type:Schema.Types.ObjectId, ref:"FoodCategory"},
 }, {
     timestamps:true,
     versionKey: false 

@@ -1,10 +1,9 @@
-import { create } from 'domain';
 import { configDotenv } from 'dotenv';
 import express, {Request,Response} from 'express';
-import { MongoClient} from 'mongodb';
 import { foodCategoryRouter } from './router/food-category';
 import { foodRouter } from './router/food';
-import { foodOrderItem } from './router/food-item';
+import { foodOrder } from './router/food-order';
+import { user } from './router/user';
 
 const PORT = 8000;
 const app = express();
@@ -26,7 +25,8 @@ app.use(express.json());
 
 app.use("/food-category/",foodCategoryRouter); 
 app.use("/food/",foodRouter);
-app.use("/food-order-item/",foodOrderItem)
+app.use("/food-order/",foodOrder);
+app.use("/user/",user);
 
 app.get("/",async (req:Request,res:Response)=>{
     res.send("hello");

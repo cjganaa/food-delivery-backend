@@ -1,7 +1,23 @@
-import {Request, Response, Router } from "express";
+import {Request, Response, Router,NextFunction } from "express";
 import { FoodCategory } from "../models/food-category";
+import { Food } from "../models/food";
+import { verifyToken } from "@clerk/backend";
 
 export const foodCategoryRouter = Router();
+
+async function auth (req:Request,res:Response,next:NextFunction) {
+    try{
+        const token:any = req.get("token");
+        const verified = await verifyToken(token,{
+            secretKey:process.env.CLERK_SECRET_KEY
+        });
+        next();
+    }
+    catch{
+        res.json({status:"Token Error"})
+    }
+}
+
 
 foodCategoryRouter.get("/",async (req:Request,res:Response)=>{
     const categories = await FoodCategory.find();
@@ -14,8 +30,14 @@ foodCategoryRouter.get("/:id",async (req:Request,res:Response)=>{
     res.json(category);
 });
 
+foodCategoryRouter.get("/:id/foods",async (req:Request,res:Response)=>{
+    const {id} = req.params;
+    const foods = await Food.find({category:id});
+    res.json(foods);
+});
+
 foodCategoryRouter.post("/",async (req:Request,res:Response)=>{
-    const category = await FoodCategory.create(req.body);
+    const category = await FoodCategory.create({...req.body,count:0});
     res.json(category);
 });
 

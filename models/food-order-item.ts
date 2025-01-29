@@ -1,8 +1,6 @@
-import { model, Schema } from "mongoose";
+import {Schema } from "mongoose";
 
 export const FoodOrderItemSchema = new Schema({
-    food:{type:Schema.Types.ObjectId},
+    food:{type:Schema.Types.ObjectId,ref:"Food"},
     quantity:Number
 });
-FoodOrderItemSchema.set('toJSON',{virtuals: true,transform: function (doc, ret) {   delete ret._id,ret.__v  }});
-export const FoodOrderItem = model("FoodOrderItem",FoodOrderItemSchema,"food-order-item")

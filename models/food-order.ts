@@ -1,16 +1,17 @@
-import { Schema , model} from "mongoose";
-import { ObjectId } from "mongodb";
+import { Schema , model,models} from "mongoose";
 import { FoodOrderItemSchema } from "./food-order-item";
-import { FoodOrderStatusEnum } from "./food-order-status-enum";
 
 const FoodOrderSchema = new Schema({
-    user: ObjectId,
+    user: {type:Schema.Types.ObjectId, ref:"User"},
     totalPrice: Number,
-    foodOrderItems: [{type:FoodOrderItemSchema}],
-    status: {type:FoodOrderStatusEnum},
+    foodOrderItems: [FoodOrderItemSchema],
+    status: {
+        type:String,
+        enum:["PENDING","CANCELED","DELIVERED"],
+        default:"PENDING",
+    },
 }, {
     timestamps:true,
     versionKey: false 
 });
-FoodOrderSchema.set('toJSON',{virtuals: true,transform: function (doc, ret) {   delete ret._id,ret.__v  }});
-export const FoodOrder = model('FoodOrder',FoodOrderSchema,'food-order');
+export const FoodOrder = models['FoodOrder'] || model('FoodOrder',FoodOrderSchema,'food-order');

@@ -2,6 +2,7 @@ import { Schema,model } from "mongoose";
 
 export const FoodCategorySchema = new Schema({
     name: String,
+    count: Number,
 }, {
     timestamps:true,
     versionKey: false, 

@@ -1,7 +1,7 @@
 import { Schema , model} from "mongoose";
 
 const FoodSchema = new Schema({
-    name:{type:Schema.Types.ObjectId},
+    name:String,
     price:Number,
     image:String,
     ingredients:String,
